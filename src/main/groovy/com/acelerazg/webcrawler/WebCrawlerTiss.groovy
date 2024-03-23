@@ -4,6 +4,7 @@ import groovyx.net.http.HttpBuilder
 import groovyx.net.http.optional.Download
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
+import org.jsoup.select.Elements
 
 class WebCrawlerTiss {
 
@@ -39,6 +40,38 @@ class WebCrawlerTiss {
         String finalLink = nextPage.select('tbody tr:first-child a').attr('href')
 
         downloadFile(finalLink, "DocumentoTiss")
+    }
+
+    static void tissVersionHistory() {
+
+        String link = linkTiss()
+        Document page = getLink(link)
+        Element pageElement = page.getElementsByClass('external-link').first()
+        String nextPageLink = pageElement.attr('href')
+
+        Document nextPage = getLink(nextPageLink)
+        Element table = nextPage.select("#content-core table").first()
+
+        Element thead = table.select('thead').first()
+        Element tbody = table.select('tbody').first()
+
+        Elements theadElements = thead.select('th')
+        List<String> headers = theadElements.each {it.text() }
+
+        int index = headers.indexOf("Competência")
+
+        Elements tbodyElements = tbody.select('tr')
+        List<List<String>> tableValues = []
+
+        tbodyElements.each{tr ->
+
+            List<String> rowValues = []
+            Elements tdElements = tbodyElements.select('td')
+
+
+        }
+
+        print(nextPageLink)
     }
 
     static downloadFile(String url, String path = "./downloads", String fileName) {

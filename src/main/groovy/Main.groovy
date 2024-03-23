@@ -6,6 +6,8 @@ class Main {
 
         WebCrawlerTiss webCrawlerTiss = new WebCrawlerTiss()
 
-        webCrawlerTiss.tissDocument()
+//        webCrawlerTiss.tissDocument()
+
+        webCrawlerTiss.tissVersionHistory()
     }
 }
