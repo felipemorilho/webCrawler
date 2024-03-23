@@ -1,0 +1,28 @@
+plugins {
+    id 'groovy'
+    id 'java'
+    id 'application'
+}
+
+group = 'com.acelerazg.webcrawler'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.codehaus.groovy:groovy-all:3.0.21'
+    implementation 'io.github.http-builder-ng:http-builder-ng-core:1.0.4'
+    implementation 'org.jsoup:jsoup:1.15.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+application {
+    mainClass = 'Main'
+}
