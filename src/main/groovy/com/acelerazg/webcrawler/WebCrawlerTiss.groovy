@@ -55,19 +55,34 @@ class WebCrawlerTiss {
         Element thead = table.select('thead').first()
         Element tbody = table.select('tbody').first()
 
-        Elements theadElements = thead.select('th')
+        Elements theadElements = thead.select('th:lt(3)')
         List<String> headers = theadElements.each {it.text() }
 
-        int index = headers.indexOf("Competência")
+        if (headers.size() < 3 || !headers.containsAll(["Competência", "Publicação", "Início de Vigência"])) {
+            throw new Exception("Required headers not found in the table.")
+        }
 
         Elements tbodyElements = tbody.select('tr')
         List<List<String>> tableValues = []
 
+        boolean stopGetValues = false
+
         tbodyElements.each{tr ->
 
-            List<String> rowValues = []
-            Elements tdElements = tbodyElements.select('td')
+            while(!stopGetValues) {
 
+                List<String> rowValues = []
+                Elements tdElements = tbodyElements.select('td')
+                String competence = tdElements.get(0).text()
+                String publication = tdElements.get(1).text()
+                String validityBeginning = tdElements.get(2).text()
+                rowValues.add(competence)
+                rowValues.add(publication)
+                rowValues.add(validityBeginning)
+
+                tableValues.add(rowValues)
+
+            }
 
         }
 
