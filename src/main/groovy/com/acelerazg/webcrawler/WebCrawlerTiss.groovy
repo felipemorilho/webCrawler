@@ -56,7 +56,9 @@ class WebCrawlerTiss {
         Element tbody = table.select('tbody').first()
 
         Elements theadElements = thead.select('th:lt(3)')
-        List<String> headers = theadElements.each {it.text() }
+        List<String> headers = []
+        theadElements.each {th ->
+            headers.add(th.text()) }
 
         if (headers.size() < 3 || !headers.containsAll(["Competência", "Publicação", "Início de Vigência"])) {
             throw new Exception("Required headers not found in the table.")
@@ -67,12 +69,12 @@ class WebCrawlerTiss {
 
         boolean stopGetValues = false
 
-        tbodyElements.each{tr ->
+        for(Element tr : tbodyElements) {
 
-            while(!stopGetValues) {
+            if(!stopGetValues) {
 
                 List<String> rowValues = []
-                Elements tdElements = tbodyElements.select('td')
+                Elements tdElements = tr.select('td')
                 String competence = tdElements.get(0).text()
                 String publication = tdElements.get(1).text()
                 String validityBeginning = tdElements.get(2).text()
@@ -82,9 +84,27 @@ class WebCrawlerTiss {
 
                 tableValues.add(rowValues)
 
+                stopGetValues = competence == "Jan/2016"
+
+                if(stopGetValues) break
             }
+        }
+
+        String csvPath = "./downloads/tissVersion.csv"
+        FileWriter csvWriter = new FileWriter(csvPath)
+
+        csvWriter.append("Competência,Publicação,Início de Vigência")
+        csvWriter.append('\n')
+
+        tableValues.each { row ->
+
+            csvWriter.append(row.join(','))
+            csvWriter.append('\n')
 
         }
+
+        csvWriter.flush()
+        csvWriter.close()
 
         print(nextPageLink)
     }
