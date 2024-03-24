@@ -1,3 +1,5 @@
+package com.acelerazg.webcrawler
+
 import com.acelerazg.webcrawler.WebCrawlerTiss
 
 class Main {
@@ -7,7 +9,7 @@ class Main {
         WebCrawlerTiss webCrawlerTiss = new WebCrawlerTiss()
 
         webCrawlerTiss.tissDocument()
-//        webCrawlerTiss.tissVersionHistory()
-
+        webCrawlerTiss.tissVersionHistory()
+        webCrawlerTiss.errorTable()
     }
 }

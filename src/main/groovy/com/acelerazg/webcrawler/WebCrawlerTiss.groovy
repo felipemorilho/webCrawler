@@ -8,7 +8,7 @@ import org.jsoup.select.Elements
 
 class WebCrawlerTiss {
 
-    private static Document getLink(String url) {
+    protected static Document getLink(String url) {
 
         try {
 
@@ -25,7 +25,7 @@ class WebCrawlerTiss {
         }
     }
 
-    static String linkTiss() {
+    protected static String linkTiss() {
 
         try {
 
@@ -46,7 +46,7 @@ class WebCrawlerTiss {
         }
     }
 
-    static void tissDocument() {
+    protected static void tissDocument() {
 
         try {
 
@@ -66,7 +66,7 @@ class WebCrawlerTiss {
         }
     }
 
-    static void tissVersionHistory() {
+    protected static void tissVersionHistory() {
 
         try {
 
@@ -139,7 +139,28 @@ class WebCrawlerTiss {
         }
     }
 
-    static downloadFile(String url, String path = "./download", String fileName) {
+    protected static void errorTable() {
+
+        try {
+
+            String link = linkTiss()
+            Document page = getLink(link)
+            Element pageElement = page.getElementsByClass('alert-link internal-link').first()
+            String nextPageLink = pageElement.attr('href')
+
+            Document nextPage = getLink(nextPageLink)
+            Element nextPageElement = nextPage.getElementsByClass('internal-link').first()
+            String finalLink = nextPageElement.attr('href')
+
+            downloadFile(finalLink, "TabelaErrosDeEnvioANS.xlsx")
+
+        } catch (Exception e) {
+
+            e.printStackTrace("\n\nErro ao baixar tabela de erros.\nErro: ${e.message} \n")
+        }
+    }
+
+    protected static downloadFile(String url, String path = "./downloads", String fileName) {
 
         try {
 
